@@ -1,1 +1,0 @@
-411855017 Krittaya Kruapat 
