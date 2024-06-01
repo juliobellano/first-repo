@@ -5,17 +5,23 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script>
             async function searchStocks(query) {
-        const response = await fetch(`search_stock.php?query=${query}`); // Modified URL
-        const data = await response.json();
-        const dropdown = document.getElementById("stockDropdown");
-        dropdown.innerHTML = "";
-        data.bestMatches.forEach(stock => {
-            const option = document.createElement("option");
-            option.value = stock["1. symbol"];
-            option.textContent = `${stock["1. symbol"]} - ${stock["2. name"]}`;
-            dropdown.appendChild(option);
-        });
-    }
+    const response = await fetch('search_stock.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `query=${query}`
+    });
+    const data = await response.json();
+    const dropdown = document.getElementById("stockDropdown");
+    dropdown.innerHTML = "";
+    data.bestMatches.forEach(stock => {
+        const option = document.createElement("option");
+        option.value = stock["1. symbol"];
+        option.textContent = `${stock["1. symbol"]} - ${stock["2. name"]}`;
+        dropdown.appendChild(option);
+    });
+}
 
 function updateDropdown() {
     const query = document.getElementById("stockSearch").value;
@@ -23,6 +29,7 @@ function updateDropdown() {
         searchStocks(query);
     }
 }
+
     </script>
 </head>
 <body>
