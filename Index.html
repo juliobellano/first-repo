@@ -4,37 +4,25 @@
     <title>Stock Portfolio Tracker</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script>
-        async function searchStocks(query) {
-            const response = await fetch(`fetch_stock.php?query=${query}`);
-            const data = await response.json();
-            const dropdown = document.getElementById("stockDropdown");
-            dropdown.innerHTML = "";
-            data.bestMatches.forEach(stock => {
-                const option = document.createElement("option");
-                option.value = stock["1. symbol"];
-                option.textContent = `${stock["1. symbol"]} - ${stock["2. name"]}`;
-                dropdown.appendChild(option);
-            });
-        }
+            async function searchStocks(query) {
+        const response = await fetch(`search_stock.php?query=${query}`); // Modified URL
+        const data = await response.json();
+        const dropdown = document.getElementById("stockDropdown");
+        dropdown.innerHTML = "";
+        data.bestMatches.forEach(stock => {
+            const option = document.createElement("option");
+            option.value = stock["1. symbol"];
+            option.textContent = `${stock["1. symbol"]} - ${stock["2. name"]}`;
+            dropdown.appendChild(option);
+        });
+    }
 
-        function updateDropdown() {
-            const query = document.getElementById("stockSearch").value;
-            if (query.length > 2) {
-                searchStocks(query);
-            }
-        }
-
-        async function showPortfolio() {
-            const response = await fetch('get_portfolio.php');
-            const portfolio = await response.json();
-            const portfolioTable = document.getElementById("portfolioTable");
-            portfolioTable.innerHTML = "<tr><th>Symbol</th><th>Name</th></tr>";
-            portfolio.forEach(stock => {
-                const row = document.createElement("tr");
-                row.innerHTML = `<td>${stock.symbol}</td><td>${stock.name}</td>`;
-                portfolioTable.appendChild(row);
-            });
-        }
+function updateDropdown() {
+    const query = document.getElementById("stockSearch").value;
+    if (query.length > 2) {
+        searchStocks(query);
+    }
+}
     </script>
 </head>
 <body>
