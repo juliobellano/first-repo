@@ -14,8 +14,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($api_data['results'])) {
         $name = $api_data['results'][0]['name'];
 
-        $stmt = $conn->prepare("INSERT INTO portfolio (symbol, name, amount) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $symbol, $name, $amount);
+        // Fetch current price
+        $price_url = "https://api.polygon.io/v1/last_quote/stocks/$symbol?apiKey=$api_key";
+        $price_response = file_get_contents($price_url);
+        $price_data = json_decode($price_response, true);
+        $current_price = $price_data['last']['price'];
+        $buy_price = $current_price;  // For simplicity, using the current price as the buy price
+
+        // Calculate profit/loss
+        $profit_loss = 0;
+        $profit_loss_percent = 0;
+
+        $stmt = $conn->prepare("INSERT INTO portfolio (symbol, name, amount, current_price, buy_price, profit_loss, profit_loss_percent) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssiidd", $symbol, $name, $amount, $current_price, $buy_price, $profit_loss, $profit_loss_percent);
 
         if ($stmt->execute()) {
             echo "Stock added successfully.";
