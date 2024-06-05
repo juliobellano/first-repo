@@ -31,3 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
+
+<br>
+<a href="index.php">Back to Portfolio</a>
