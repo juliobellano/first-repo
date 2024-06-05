@@ -28,10 +28,10 @@
             const response = await fetch('get_portfolio.php');
             const portfolio = await response.json();
             const portfolioTable = document.getElementById("portfolioTable");
-            portfolioTable.innerHTML = "<tr><th>Symbol</th><th>Name</th><th>Amount</th><th>Current Price</th><th>Profit/Loss</th><th>Profit/Loss (%)</th></tr>";
+            portfolioTable.innerHTML = "<tr><th>Symbol</th><th>Name</th><th>Amount</th><th>Current Price</th><th>Buy Price</th><th>Profit/Loss</th><th>Profit/Loss (%)</th></tr>";
             portfolio.forEach(stock => {
                 const row = document.createElement("tr");
-                row.innerHTML = `<td>${stock.symbol}</td><td>${stock.name}</td><td>${stock.amount}</td><td>${stock.current_price}</td><td>${stock.profit_loss}</td><td>${stock.profit_loss_percent}%</td>`;
+                row.innerHTML = `<td>${stock.symbol}</td><td>${stock.name}</td><td>${stock.amount}</td><td>${stock.current_price}</td><td>${stock.buy_price}</td><td>${stock.profit_loss}</td><td>${stock.profit_loss_percent}%</td>`;
                 portfolioTable.appendChild(row);
             });
         }
@@ -55,7 +55,7 @@
 
         <h2>Portfolio</h2>
         <table id="portfolioTable">
-            <tr><th>Symbol</th><th>Name</th><th>Amount</th><th>Current Price</th><th>Profit/Loss</th><th>Profit/Loss (%)</th></tr>
+            <tr><th>Symbol</th><th>Name</th><th>Amount</th><th>Current Price</th><th>Buy Price</th><th>Profit/Loss</th><th>Profit/Loss (%)</th></tr>
         </table>
     </div>
 </body>
