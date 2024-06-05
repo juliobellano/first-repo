@@ -3,18 +3,19 @@ include 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $symbol = $_POST['stockSymbol'];
+    $amount = $_POST['stockAmount'];
 
-    // Fetch stock name using Alpha Vantage API
-    $api_key = "YZM8LKW7RDEBELFD6";
-    $api_url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=$symbol&apikey=$api_key";
+    // Fetch stock name using Polygon.io API
+    $api_key = "EoORQU1v7jsIphhGyFHr3opEsSkHGkqX";
+    $api_url = "https://api.polygon.io/v3/reference/tickers?ticker=$symbol&apiKey=$api_key";
     $api_response = file_get_contents($api_url);
     $api_data = json_decode($api_response, true);
 
-    if (!empty($api_data['bestMatches'])) {
-        $name = $api_data['bestMatches'][0]['2. name'];
+    if (!empty($api_data['results'])) {
+        $name = $api_data['results'][0]['name'];
 
-        $stmt = $conn->prepare("INSERT INTO portfolio (symbol, name) VALUES (?, ?)");
-        $stmt->bind_param("ss", $symbol, $name);
+        $stmt = $conn->prepare("INSERT INTO portfolio (symbol, name, amount) VALUES (?, ?, ?)");
+        $stmt->bind_param("ssi", $symbol, $name, $amount);
 
         if ($stmt->execute()) {
             echo "Stock added successfully.";

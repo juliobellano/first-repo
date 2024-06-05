@@ -5,20 +5,14 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script>
         async function searchStocks(query) {
-            const response = await fetch('search_stock.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `query=${query}`
-            });
+            const response = await fetch(`fetch_stock.php?query=${query}`);
             const data = await response.json();
             const dropdown = document.getElementById("stockDropdown");
             dropdown.innerHTML = "";
-            data.bestMatches.forEach(stock => {
+            data.results.forEach(stock => {
                 const option = document.createElement("option");
-                option.value = stock["1. symbol"];
-                option.textContent = `${stock["1. symbol"]} - ${stock["2. name"]}`;
+                option.value = stock["ticker"];
+                option.textContent = `${stock["ticker"]} - ${stock["name"]}`;
                 dropdown.appendChild(option);
             });
         }
@@ -30,9 +24,16 @@
             }
         }
 
-        function showPortfolio() {
-            // Code to show the portfolio
-            alert("Portfolio is empty.");
+        async function showPortfolio() {
+            const response = await fetch('get_portfolio.php');
+            const portfolio = await response.json();
+            const portfolioTable = document.getElementById("portfolioTable");
+            portfolioTable.innerHTML = "<tr><th>Symbol</th><th>Name</th><th>Amount</th><th>Current Price</th><th>Profit/Loss</th><th>Profit/Loss (%)</th></tr>";
+            portfolio.forEach(stock => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${stock.symbol}</td><td>${stock.name}</td><td>${stock.amount}</td><td>${stock.current_price}</td><td>${stock.profit_loss}</td><td>${stock.profit_loss_percent}%</td>`;
+                portfolioTable.appendChild(row);
+            });
         }
     </script>
 </head>
@@ -45,6 +46,8 @@
             <label for="stockDropdown">Select stock:</label>
             <select id="stockDropdown" name="stockSymbol">
             </select>
+            <label for="stockAmount">Amount:</label>
+            <input type="number" id="stockAmount" name="stockAmount" required>
             <input type="submit" value="Add to Portfolio">
         </form>
 
@@ -52,7 +55,7 @@
 
         <h2>Portfolio</h2>
         <table id="portfolioTable">
-            <tr><th>Symbol</th><th>Name</th></tr>
+            <tr><th>Symbol</th><th>Name</th><th>Amount</th><th>Current Price</th><th>Profit/Loss</th><th>Profit/Loss (%)</th></tr>
         </table>
     </div>
 </body>
