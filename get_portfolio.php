@@ -9,6 +9,7 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $symbol = $row['symbol'];
         $amount = $row['amount'];
+
         // Fetch current price using Polygon.io API
         $price_url = "https://api.polygon.io/v1/last_quote/stocks/$symbol?apiKey=$api_key";
         $price_response = file_get_contents($price_url);
@@ -16,16 +17,24 @@ if ($result->num_rows > 0) {
 
         if (isset($price_data['last']['price'])) {
             $current_price = $price_data['last']['price'];
+            $buy_price = $row['buy_price'];
+            $profit_loss = ($current_price - $buy_price) * $amount;
+            $profit_loss_percent = (($current_price - $buy_price) / $buy_price) * 100;
+
+            // Update the database
+            $update_stmt = $conn->prepare("UPDATE portfolio SET current_price = ?, profit_loss = ?, profit_loss_percent = ? WHERE id = ?");
+            $update_stmt->bind_param("dddi", $current_price, $profit_loss, $profit_loss_percent, $row['id']);
+            $update_stmt->execute();
+            $update_stmt->close();
 
             $portfolio[] = [
                 'symbol' => $symbol,
                 'name' => $row['name'],
                 'amount' => $amount,
                 'current_price' => $current_price,
-                // For simplicity, assuming a fixed buy price. In a real scenario, you would store the buy price.
-                'buy_price' => 100,
-                'profit_loss' => ($current_price - 100) * $amount,
-                'profit_loss_percent' => (($current_price - 100) / 100) * 100
+                'buy_price' => $buy_price,
+                'profit_loss' => $profit_loss,
+                'profit_loss_percent' => $profit_loss_percent
             ];
         } else {
             $portfolio[] = [
