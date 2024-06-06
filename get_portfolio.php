@@ -1,7 +1,22 @@
 <?php
 include 'db_connect.php';
 
-$api_key = "EoORQU1v7jsIphhGyFHr3opEsSkHGkqX";
+$api_keys = [
+    "1GDUu2YezC0EK7qoI5nRGLCeNsoVTm28",
+    "tbwB_RszI_PN6CbjgZkNx4mPTL9gjbSF",
+    "xKUsip2SKm4yT4a3AOMNVjulX_VGZ1VN" /*,
+    "helga api",
+    "timo api",
+    "shiena api",
+    "bam api"*/
+];
+
+function get_api_key($api_keys) {
+    static $index = -1;
+    $index = ($index + 1) % count($api_keys);
+    return $api_keys[$index];
+}
+
 $result = $conn->query("SELECT * FROM portfolio");
 
 if ($result->num_rows > 0) {
@@ -11,6 +26,7 @@ if ($result->num_rows > 0) {
         $amount = $row['amount'];
 
         // Fetch current price using Polygon.io API
+        $api_key = get_api_key($api_keys);
         $price_url = "https://api.polygon.io/v1/last_quote/stocks/$symbol?apiKey=$api_key";
         $price_response = file_get_contents($price_url);
         $price_data = json_decode($price_response, true);
@@ -55,4 +71,3 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
-  
