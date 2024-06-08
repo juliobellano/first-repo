@@ -1,26 +1,41 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    background-color:rgb(249,225,196);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    margin: 10px;
 }
 
 .container {
     max-width: 600px;
-    margin: auto;
+    margin: 30px auto;
 }
 
-input[type=text], select, input[type=number] {
+input[type=text], select {
     width: 100%;
     padding: 12px;
-    margin: 8px 0;
+    margin: 10px auto;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
+input[type=number] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.col-1-2 {
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+}
 input[type=submit], button {
     width: 100%;
-    background-color: #4CAF50;
+    background-color: #45a049;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -29,24 +44,33 @@ input[type=submit], button {
     cursor: pointer;
 }
 
-input[type=submit]:hover, button:hover {
-    background-color: #45a049;
-}
-
 table {
+    font-size: 11px;
     width: 100%;
     border-collapse: collapse;
 }
 
 table, th, td {
-    border: 1px solid black;
+    border: 3px solid black;
 }
 
 th, td {
-    padding: 8px;
-    text-align: left;
+    padding: 12px;
 }
 
 th {
     background-color: #f2f2f2;
+}
+
+.group:before, 
+.group:after {
+    content:"";
+    display: table;
+}
+.group:after {
+    clear: both;
+}
+.group {
+    clear: both;
+    zoom: 1;
 }
