@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Stock Portfolio Tracker</title>
+    <meta charset="utf-8">
+    <title>Stock Portfolio Tracker</title>  
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script>
-        async function searchStocks(query) {
-            const response = await fetch(`fetch_stock.php?query=${query}`);
+        function updateDropdown(){
+            const query = document.getElementById("stockSearch").value;
+            if(query.length > 2){ searchStocks(query); }
+        }
+        
+        async function searchStocks(name){
+            const response = await fetch(`fetch_stock.php?query=${name}`);
             const data = await response.json();
             const dropdown = document.getElementById("stockDropdown");
             dropdown.innerHTML = "";
@@ -16,14 +22,6 @@
                 dropdown.appendChild(option);
             });
         }
-
-        function updateDropdown() {
-            const query = document.getElementById("stockSearch").value;
-            if (query.length > 2) {
-                searchStocks(query);
-            }
-        }
-
         async function showPortfolio() {
             const response = await fetch('get_portfolio.php');
             const portfolio = await response.json();
@@ -37,25 +35,40 @@
         }
     </script>
 </head>
+
 <body>
     <div class="container">
         <h1>Stock Portfolio Tracker</h1>
-        <form action="add_stock.php" method="post">
-            <label for="stockSearch">Search for a stock:</label>
-            <input type="text" id="stockSearch" name="stockSearch" onkeyup="updateDropdown()">
+        <form action="add_stock.php" method="get">
+            
+            <label for="stockSearch">Search for a stock:</label><br>
+            <input type="text" id="stockSearch" name="stockSearch" onkeyup="updateDropdown()"><br>
+            
             <label for="stockDropdown">Select stock:</label>
-            <select id="stockDropdown" name="stockSymbol">
-            </select>
-            <label for="stockAmount">Amount:</label>
-            <input type="number" id="stockAmount" name="stockAmount" required>
+            <select id="stockDropdown" name="stockSymbol"></select><br>
+            <section class="col-1-2">
+                <label for="stockAmount">Amount:</label><br>
+                <input type="number" id="stockAmount" name="stockAmount" required><br>
+            </section>
+            <section class="col-1-2">
+                <label for="buyPrice">Buy Price :</label><br>
+                <input type="number" id="buyPrice" name="buyPrice" required><br>
+            </section>
             <input type="submit" value="Add to Portfolio">
         </form>
-
-        <button type="button" onclick="showPortfolio()">Show Portfolio</button>
+        <br><br>
+        <button type="button">Show Portfolio</button>
 
         <h2>Portfolio</h2>
         <table id="portfolioTable">
-            <tr><th>Symbol</th><th>Name</th><th>Amount</th><th>Current Price</th><th>Buy Price</th><th>Profit/Loss</th><th>Profit/Loss (%)</th></tr>
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Current Price</th>
+                <th>Buy Price</th>
+                <th>Profit/Loss</th>
+                <th>Profit/Loss (%)</th></tr>
         </table>
     </div>
 </body>
