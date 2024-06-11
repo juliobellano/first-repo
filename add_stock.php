@@ -2,11 +2,6 @@
 include 'db_connect.php';
 
 $api_keys = [
-    "EoORQU1v7jsIphhGyFHr3opEsSkHGkqX",
-    "tbwB_RszI_PN6CbjgZkNx4mPTL9gjbSF",
-    "xKUsip2SKm4yT4a3AOMNVjulX_VGZ1VN",
-    "h43VrHWchmYxje_qvHehnjr1OAc_gLqQ",
-    "x_NG9NB8qzyI9XWKKc8UmKMxzbb_XSpm",
     "1U3BHsFpewhF_TQLOMop5WHAmrtCEubs"
 ];
 
