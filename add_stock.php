@@ -51,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo "Stock Amount: " . htmlspecialchars($amount) . "<br>";
     echo "Buy Price: " . htmlspecialchars($buy_price) . "<br>";
     echo "Current price: ". htmlspecialchars($current_price) . "<br>";
-    echo "Profit_loss: " . htmlspecialchars($profit_loss) . "<br>";
-    echo "profitLoss Percentage: ". htmlspecialchars($profit_loss_percent).'%' . "<br>";
+    echo "Profit Loss: " . htmlspecialchars($profit_loss) . "<br>";
+    echo "profit Loss Percentage: ". htmlspecialchars($profit_loss_percent).'%' . "<br>";
     echo "Total valuation:".htmlspecialchars($total_valuation). "<br>";
 
     if ($existence == true) {
