@@ -153,7 +153,6 @@ th {
             <input type="submit" value="Add to Portfolio">
         </form>
         <br>
-        <button onclick="togglePortfolioTable()">Sell Stock</button>
 
         <h2>Portfolio</h2>
         <table id="portfolioTable">
