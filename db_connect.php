@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = ""; // XAMPP default password for MySQL is empty
+$password = ""; 
 $dbname = "stock_portfolio";
 
 // Create connection
