@@ -5,11 +5,8 @@ $api_keys = [
     "1U3BHsFpewhF_TQLOMop5WHAmrtCEubs"
 ];
 
-// Function to get the next API key in a round-robin fashion
 function get_api_key($api_keys) {
-    static $index = -1;
-    $index = ($index + 1) % count($api_keys);
-    return $api_keys[$index];
+    return $api_keys[0];
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -25,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $api_data = json_decode($api_response, true);
     
     if(isset($api_data['ticker'])){
-        $prices_data = $api_data['ticker']['min'];//minobject The most recent minute bar for this ticker.
+        $prices_data = $api_data['ticker']['min'];//min object The most recent minute bar for this ticker.
         $current_price = $prices_data['c'];//The close price for the symbol in the given time period.
     }
     else{ die("Error: Unable to find ticker information.");}
@@ -47,13 +44,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $profit_loss_percent = (($current_price - $buy_price) / $current_price) * 100; 
     $total_valuation = ($current_price) * $amount;
     
+
     echo "Stock Symbol: " . htmlspecialchars($symbol) . "<br>";
     echo "Stock Amount: " . htmlspecialchars($amount) . "<br>";
     echo "Buy Price: " . htmlspecialchars($buy_price) . "<br>";
     echo "Current price: ". htmlspecialchars($current_price) . "<br>";
-    echo "Profit Loss: " . htmlspecialchars($profit_loss) . "<br>";
-    echo "profit Loss Percentage: ". htmlspecialchars($profit_loss_percent).'%' . "<br>";
-    echo "Total valuation:".htmlspecialchars($total_valuation). "<br>";
+    echo "Profit_loss: " . htmlspecialchars($profit_loss) . "<br>";
+    echo "profitLoss Percentage: ". htmlspecialchars($profit_loss_percent).'%' . "<br>";
+    echo "total_valuation".htmlspecialchars($total_valuation). "<br>";
 
     if ($existence == true) {
         $sql = "UPDATE portfolio 
@@ -73,11 +71,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($stmt->execute()) { echo "Stock added successfully.";}
     else {echo "Error: " . $stmt->error;}
     $stmt->close();
-} 
-else { die("Error: Stock not found."); }
+} else {
+    die("Error: Stock not found.");
+}
 
 $conn->close();
-
 ?>
 
 <br>
