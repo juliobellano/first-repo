@@ -5,8 +5,9 @@ include 'db_connect.php';
 $result = $conn->query("SELECT * FROM portfolio");
 
 $portfolio = [];
-if ($result === FALSE) { die("Error executing query: " . $conn->error);} 
-else if ($result->num_rows > 0) {
+if ($result === FALSE) {
+    die("Error executing query: " . $conn->error);
+} else if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $portfolio[] = $row;
     }
@@ -153,6 +154,7 @@ th {
             <input type="submit" value="Add to Portfolio">
         </form>
         <br>
+        <button onclick="togglePortfolioTable()">Remove Stock</button>
 
         <h2>Portfolio</h2>
         <table id="portfolioTable">
