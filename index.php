@@ -5,9 +5,8 @@ include 'db_connect.php';
 $result = $conn->query("SELECT * FROM portfolio");
 
 $portfolio = [];
-if ($result === FALSE) {
-    die("Error executing query: " . $conn->error);
-} else if ($result->num_rows > 0) {
+if ($result === FALSE) { die("Error executing query: " . $conn->error);}
+else if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $portfolio[] = $row;
     }
@@ -50,6 +49,12 @@ input[type=number] {
 
 .col-1-2 {
     width: 49%;
+    display: inline-block;
+    vertical-align: top;
+}
+.col-1-3 {
+    width: 30%;
+    padding-left: 20px;
     display: inline-block;
     vertical-align: top;
 }
@@ -103,9 +108,6 @@ th {
     <title>Stock Portfolio Tracker</title>   
     <link rel="stylesheet" href="styles.css">
     <script>
-        $api_keys = [
-            "1U3BHsFpewhF_TQLOMop5WHAmrtCEubs"
-        ];
         function updateDropdown(){
             const query = document.getElementById("stockSearch").value;
             if(query.length > 2){ searchStocks(query); }
@@ -122,11 +124,6 @@ th {
                 option.textContent = `${stock["ticker"]} - ${stock["name"]}`;
                 dropdown.appendChild(option);
             });
-        }
-
-        function togglePortfolioTable() {
-            var table = document.querySelector('.portfolioTable');
-            table.style.display = table.style.display === 'none' ? 'table' : 'none';
         }
     </script>
 </head>
@@ -154,7 +151,32 @@ th {
             <input type="submit" value="Add to Portfolio">
         </form>
         <br>
-        <button onclick="togglePortfolioTable()">Remove Stock</button>
+
+        <form action="sell_stock.php" method="get">
+        <section class="col-1-3">
+            <label for="stocksOwned">Stock To Sell :</label><br>
+            <select id="stocksOwned" name="stocksOwned">
+                <?php
+                    include 'db_connect.php';
+                    $sql = "SELECT symbol FROM portfolio";
+                    if ($res = $conn->query($sql)) {
+                        if ($res->num_rows > 0) {
+                            while ($row = $res->fetch_assoc()) {
+                                echo '<option value="' . htmlspecialchars($row['symbol']) . '">' . htmlspecialchars($row['symbol']) . '</option>';
+                            }
+                        }
+                        $res->free();
+                    }
+                    $conn->close();
+                ?>
+            </select>
+        </section>
+        <section class="col-1-3">
+            <label for="numberToSell">Amount To Sell :</label><br>
+            <input type="number" id="numberToSell" name="numberToSell">
+        </section>
+        <button>Sell Stock</button>
+        </form>
 
         <h2>Portfolio</h2>
         <table id="portfolioTable">
